@@ -34,14 +34,16 @@ module Shoryuken
       defined?(::ActiveJob)
     end
 
-    def add_group(group, concurrency = nil, delay: nil)
+    def add_group(group, concurrency = nil, delay: nil, polling_strategy: 'WeightedRoundRobin')
       concurrency ||= options[:concurrency]
       delay ||= options[:delay]
+      polling_strategy ||= polling_strategy
 
       groups[group] ||= {
         concurrency: concurrency,
         delay: delay,
-        queues: []
+        queues: [],
+        polling_strategy: polling_strategy
       }
     end
 
