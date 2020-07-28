@@ -58,7 +58,15 @@ module Shoryuken
     end
 
     def polling_strategy(group)
-      strategy = (group == 'default' ? options : options[:groups].to_h[group]).to_h[:polling_strategy]
+      if options[:groups].nil?
+        strategy = (group == 'default' ? options : groups.to_h[group]).to_h[:polling_strategy]
+      else
+        strategy = (group == 'default' ? options : options[:groups].to_h[group]).to_h[:polling_strategy]
+      end
+
+      puts group
+      puts strategy
+
       case strategy
       when 'WeightedRoundRobin', nil # Default case
         Polling::WeightedRoundRobin
